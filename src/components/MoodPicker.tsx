@@ -2,8 +2,11 @@ import React from "react";
 import { Text, View, StyleSheet, Pressable, Image } from "react-native";
 import { theme } from "../theme";
 import { MoodOptionType } from "../types";
+import Reanimated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const imageSrc = require('../../assets/butterflies.png');
+
+const ReanimatedPressable = Reanimated.createAnimatedComponent(Pressable);
 
 const moodOptions: MoodOptionType[] = [
     { emoji: '🧑‍💻', description: 'studious' },
@@ -20,6 +23,11 @@ type MoodPickerProps = {
 export const MoodPicker: React.FC<MoodPickerProps> = ({ handleSelectMood }) => {
     const [selectedMood, setSelectedMood] = React.useState<MoodOptionType>();
     const [hasSelected, setHasSelected] = React.useState(false);
+
+    const buttonStyle = useAnimatedStyle(() => ({
+        opacity: selectedMood ? withTiming(1) : withTiming(0.5),
+        transform: [{ scale: selectedMood ? withTiming(1) : 0.8 }]
+    }), [selectedMood]);
 
     const handleSelect = React.useCallback(() => {
         if (selectedMood) {
@@ -65,11 +73,11 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ handleSelectMood }) => {
                 ))
                 }
             </View >
-            <Pressable
-                style={styles.button}
+            <ReanimatedPressable
+                style={[styles.button, buttonStyle]}
                 onPress={handleSelect}>
                 <Text style={styles.buttonText}>Choose</Text>
-            </Pressable>
+            </ReanimatedPressable>
         </View>
     )
 }

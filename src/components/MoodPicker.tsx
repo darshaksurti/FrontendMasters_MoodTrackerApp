@@ -30,14 +30,14 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ handleSelectMood }) => {
             <Text style={styles.headingText}>How are you right now?</Text>
             <View style={styles.moodOptions}>
                 {moodOptions.map(option => (
-                    <View>
+                    <View key={option.emoji}>
                         <Pressable
                             onPress={() => setSelectedMood(option)}
                             style={[
                                 styles.moodItem,
                                 selectedMood?.emoji === option.emoji ? styles.selectedMoodItem : undefined,
                             ]}>
-                            <Text key={option.emoji}>
+                            <Text key={option.emoji} style={styles.emojiSize}>
                                 {option.emoji}
                             </Text>
                         </Pressable>
@@ -108,5 +108,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 10,
+    },
+    emojiSize: {
+        fontSize: 30,
     }
 })
